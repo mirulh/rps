@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Rock Paper Scissors Game</title>
+    <title>RPS</title>
     <style>
       body {
         text-align: center;
@@ -19,16 +19,19 @@
   </head>
 
   <body>
-    <h1>Rock Paper Scissors Game</h1>
+    <h1>Rock Paper Scissor</h1>
+
     <button id="rock">Rock</button>
     <button id="paper">Paper</button>
     <button id="scissors">Scissors</button>
     <p id="result"></p>
     <p id="round"></p>
+    <p id="pScore"></p>
+    <p id="cScore"></p>
     <p id="score"></p>
 
     <script>
-      const choices = ["rock", "paper", "scissors"];
+      const choices = ["rock", "paper", "scissor"]; //this is for computer to choose not player! notice how scissor is not relation to scissors (for player)
       let playerScore = 0;
       let computerScore = 0;
       let round = 1;
@@ -38,31 +41,51 @@
       const roundDisplay = document.getElementById("round");
       const scoreDisplay = document.getElementById("score");
 
+      const playerScoreDisplay = document.getElementById("pScore");
+      const computerScoreDisplay = document.getElementById("cScore");
+
+      // document.querySelectorAll("button"); to check what is the output
+      //Output: NodeList(3) [button#rock, button#paper, button#scissor]
+
       buttons.forEach((button) => {
         button.addEventListener("click", function () {
           if (round <= 5) {
             const playerChoice = this.id;
+            // roundDisplay.textContent = playerChoice; testing
             const computerChoice = choices[Math.floor(Math.random() * 3)];
-
+            // scoreDisplay.textContent = computerChoice; testing
             const result = determineWinner(playerChoice, computerChoice);
             resultDisplay.textContent = `Round ${round}: You chose ${playerChoice}, computer chose ${computerChoice}. ${result}`;
 
-            if (result.includes("win")) {
+            // --- this part ^ is to
+            // --- 1) get user choice 2) computer choice
+            // --- 3) compare
+
+            if (result.includes("You win!")) {
               playerScore++;
-            } else if (result.includes("lose")) {
+              playerScoreDisplay.textContent = `Player score: ${playerScore}`;
+            } //
+            else if (result.includes("Computer wins!")) {
               computerScore++;
+              computerScoreDisplay.textContent = `Computer score: ${computerScore}`;
             }
+
+            // --- this part ^ is to
+            // --- 1) count scores for both
+            // --- 2) display score for both
 
             round++;
             roundDisplay.textContent = `Round ${round} of 5`;
 
             if (round > 5) {
               if (playerScore > computerScore) {
-                scoreDisplay.textContent = `Player wins with ${playerScore} points!`;
-              } else if (playerScore < computerScore) {
-                scoreDisplay.textContent = `Computer wins with ${computerScore} points!`;
-              } else {
-                scoreDisplay.textContent = "It's a tie!";
+                scoreDisplay.textContent = `Player wins with ${playerScore} points! and Computer lose with ${computerScore} points!`;
+              } //
+              else if (playerScore < computerScore) {
+                scoreDisplay.textContent = `Computer wins with ${computerScore} points! and Player wins with ${playerScore} points!`;
+              } //
+              else {
+                scoreDisplay.textContent = `It's a tie with Player: ${playerScore} points! and Computer: ${computerScore} points!`;
               }
             }
           }
@@ -72,13 +95,15 @@
       function determineWinner(player, computer) {
         if (player === computer) {
           return "It's a tie!";
-        } else if (
+        } //
+        else if (
           (player === "rock" && computer === "scissors") ||
           (player === "paper" && computer === "rock") ||
           (player === "scissors" && computer === "paper")
         ) {
           return "You win!";
-        } else {
+        } //
+        else {
           return "Computer wins!";
         }
       }
