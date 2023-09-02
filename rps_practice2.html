@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <button id="rock">rock</button>
+    <button id="paper">paper</button>
+    <button id="scissors">scissors</button>
+
+    <p id="round"></p>
+    <p id="result"></p>
+    <p id="playerScore"></p>
+    <p id="computerScore"></p>
+    <p id="finalResult"></p>
+
+    <script>
+      const choices = ["rock", "paper", "scissors"];
+      let round = 0;
+      let playerScore = 0;
+      let computerScore = 0;
+
+      const buttons = document.querySelectorAll("button");
+      const displayResult = document.getElementById("result");
+      const displayfinalResult = document.getElementById("finalResult");
+      const displayRound = document.getElementById("round");
+      const displayPlayerScore = document.getElementById("playerScore");
+      const displayComputerScore = document.getElementById("computerScore");
+
+      buttons.forEach((button) => {
+        button.addEventListener("click", playRound);
+      });
+
+      function playRound() {
+        if (round < 5) {
+          const playerChoice = this.id;
+          console.log(playerChoice);
+
+          const computerChoice =
+            choices[Math.floor(Math.random() * choices.length)];
+          console.log(computerChoice);
+
+          const result = determineWinner(playerChoice, computerChoice);
+          console.log(result);
+
+          if (result == "Aya caramba, you win!") {
+            playerScore++;
+          } else if (result == "You lose!") {
+            computerScore++;
+          }
+
+          round++;
+          console.log(round);
+
+          displayComputerScore.textContent = `Computer score: ${computerScore}`;
+          displayPlayerScore.textContent = `Player score: ${playerScore}`;
+          displayRound.textContent = `Round: ${round}`;
+          displayResult.textContent = `Player chose: ${playerChoice} and Computer chose: ${computerChoice} so ${result}`;
+
+          if (round >= 5) {
+            if (playerScore > computerScore) {
+              displayfinalResult.textContent = `Final result: Player wins with ${playerScore} points!`;
+            } //
+            else if (computerScore > playerScore) {
+              displayfinalResult.textContent = `Final result: Computer wins with ${ComputerScore} points!`;
+            } //
+            else {
+              displayfinalResult.textContent = "Final result: It's a tie";
+            }
+          }
+        }
+      }
+
+      function determineWinner(player, computer) {
+        if (player === computer) {
+          return "Mios dios, it's a tie!";
+        } else if (
+          (player === "rock" && computer === "scissors") ||
+          (player === "paper" && computer === "rock") ||
+          (player === "scissors" && computer === "paper")
+        ) {
+          return "Aya caramba, you win!";
+        } else {
+          return "You lose!";
+        }
+      }
+    </script>
+  </body>
+</html>
